@@ -105,7 +105,7 @@ class RestRouteLoader extends Loader
 
         if (0 === strpos($controller, '@')) {
             $file = $this->locator->locate($controller);
-            $controllerClass = $this->findClass($file);
+            $controllerClass = ClassUtils::findClassInFile($file);
 
             if (false === $controllerClass) {
                 throw new \InvalidArgumentException(sprintf('Can\'t find class for controller "%s"', $controller));
@@ -117,12 +117,13 @@ class RestRouteLoader extends Loader
         if ($this->container->has($controller)) {
             // service_id
             $prefix = $controller.':';
-            if (method_exists($this->container, 'enterScope')) {
+            $useScope = method_exists($this->container, 'enterScope') && $this->container->hasScope('request');
+            if ($useScope) {
                 $this->container->enterScope('request');
                 $this->container->set('request', new Request());
             }
             $class = get_class($this->container->get($controller));
-            if (method_exists($this->container, 'enterScope')) {
+            if ($useScope) {
                 $this->container->leaveScope('request');
             }
         } elseif (class_exists($controller)) {
@@ -157,40 +158,13 @@ class RestRouteLoader extends Loader
      * @param string $file A PHP file path
      *
      * @return string|false Full class name if found, false otherwise
+     *
+     * @internal
      */
     protected function findClass($file)
     {
-        $class = false;
-        $namespace = false;
-        $tokens = token_get_all(file_get_contents($file));
-        for ($i = 0, $count = count($tokens); $i < $count; ++$i) {
-            $token = $tokens[$i];
+        @trigger_error(sprintf('The %s method is deprecated since version 1.8 and will be removed in 2.0.', __METHOD__), E_USER_DEPRECATED);
 
-            if (!is_array($token)) {
-                continue;
-            }
-
-            if (true === $class && T_STRING === $token[0]) {
-                return $namespace.'\\'.$token[1];
-            }
-
-            if (true === $namespace && T_STRING === $token[0]) {
-                $namespace = '';
-                do {
-                    $namespace .= $token[1];
-                    $token = $tokens[++$i];
-                } while ($i < $count && is_array($token) && in_array($token[0], array(T_NS_SEPARATOR, T_STRING)));
-            }
-
-            if (T_CLASS === $token[0]) {
-                $class = true;
-            }
-
-            if (T_NAMESPACE === $token[0]) {
-                $namespace = true;
-            }
-        }
-
-        return false;
+        return ClassUtils::findClassInFile($file);
     }
 }

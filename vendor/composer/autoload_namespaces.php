@@ -15,6 +15,8 @@ return array(
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src'),
     'PhpCollection' => array($vendorDir . '/phpcollection/phpcollection/src'),
+    'Nelmio\\ApiDocBundle' => array($vendorDir . '/nelmio/api-doc-bundle'),
+    'Michelf' => array($vendorDir . '/michelf/php-markdown'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
     'JsonpCallbackValidator' => array($vendorDir . '/willdurand/jsonp-callback-validator/src'),
     'Jmikola\\JsAssetsHelperBundle' => array($vendorDir . '/jmikola/js-assets-helper-bundle'),
