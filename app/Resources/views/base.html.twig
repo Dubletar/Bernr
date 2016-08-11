@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>
+        
+            {% block title %}Bernr{% endblock %}
+        
+        </title>
+        
+        {% block stylesheets %}
+        
+            {% stylesheets
+                '../app/Resources/public/css/main.css'
+                '../app/Resources/public/css/navigation.css'
+                '../app/Resources/public/css/mega-dropdown/reset.css'
+                '../app/Resources/public/css/mega-dropdown/style.css'
+                filter='cssrewrite'
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+            
+        {% endblock %}
+        
+        {% block javascripts %}
+            
+            {% javascripts
+                '../app/Resources/public/js/jquery-2.1.1.js'
+                '../app/Resources/public/js/jquery.menu-aim.js'
+                '../app/Resources/public/js/modernizr.js'
+                '../app/Resources/public/js/mega-dropdown/mega-dropdown.js'
+                '../app/Resources/public/js/user/login.js'
+            %}
+                <script type="text/javascript" src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+            
+            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+            
+        {% endblock javascripts %}
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    
+    </head>
+    <body>
+        
+        Thanks for visiting Bernr. Our site is currently under construction.
+    
+    </body>
+    
+</html>

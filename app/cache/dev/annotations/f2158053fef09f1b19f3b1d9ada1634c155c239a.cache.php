@@ -1,0 +1,1 @@
+<?php return unserialize('a:3:{i:0;O:37:"Doctrine\\ORM\\Mapping\\MappedSuperclass":1:{s:15:"repositoryClass";N;}i:1;O:42:"Doctrine\\ORM\\Mapping\\HasLifecycleCallbacks":0:{}i:2;O:41:"JMS\\Serializer\\Annotation\\ExclusionPolicy":1:{s:6:"policy";s:3:"ALL";}}');

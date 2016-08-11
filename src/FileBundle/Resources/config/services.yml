@@ -1,0 +1,9 @@
+parameters:
+    file_system.manager.class: FileBundle\Service\FileSystemManager
+
+services:
+    file_system.manager:
+        class: %file_system.manager.class%
+        arguments:
+            - '@service_container'
+            - '%kernel.root_dir%'

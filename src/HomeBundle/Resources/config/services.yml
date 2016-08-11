@@ -1,0 +1,10 @@
+parameters:
+    editor_article.class: HomeBundle\Service\ArticleManager 
+
+services:
+    editor_article.manager:
+        class: %editor_article.class%
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@exercise_html_purifier.default"
+            - "@file_system.manager"

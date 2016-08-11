@@ -1,0 +1,9 @@
+parameters:
+    utility.json_response.class: UtilityBundle\Service\JsonResponseHelper
+    
+services:
+    utility.json_response:
+        class: %utility.json_response.class%
+        arguments:
+            - @translator
+            - @jms_serializer

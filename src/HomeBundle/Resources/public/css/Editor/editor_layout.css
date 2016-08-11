@@ -1,0 +1,28 @@
+.minor-header-image {
+    height: 120px;
+}
+
+.editor-article-headline {
+    background: #fff;
+    padding: 10px;
+}
+
+.editor-article-headline-input {
+    font-size: 18px;
+    border: none;
+    padding: 10px;
+    width: 50%;
+}
+
+.editor-area-content {
+    position: relative;
+    margin: 10px;
+}
+
+.editor-area-content h3 {
+    font-weight: bold;
+}
+
+.articles-list {
+    padding: 10px;
+}

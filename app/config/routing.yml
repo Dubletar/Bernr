@@ -1,0 +1,18 @@
+file:
+    resource: "@FileBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+index:
+    pattern:  /
+    defaults: { _controller: HomeBundle:Home:index }
+home:
+    resource: "@HomeBundle/Controller/"
+    type:     annotation
+    prefix:   /
+user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

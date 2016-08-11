@@ -1,0 +1,15 @@
+parameters:
+    sess.manager.class: SessionBundle\Service\SessionManager
+
+
+services:
+    sess.manager:
+        class: %sess.manager.class%
+        arguments:
+            - "@service_container"
+            - "@doctrine.orm.entity_manager"
+    sess.request.listener:
+        class: SessionBundle\EventListener\RequestListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 255 }
+        arguments: [ '@service_container', '@sess.manager' ]

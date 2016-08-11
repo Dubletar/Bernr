@@ -1,0 +1,33 @@
+<form id='login-form' method='post' action='{{ path('login') }}'>
+    {{ dump() }}
+    <div class='login-form-header'>
+
+        Welcome back!
+
+    </div>
+
+    {% if error is defined %}
+
+        <div class='login-error'>
+
+            Username or password is incorrect. Please try again.
+
+        </div>
+
+    {% endif %}
+
+    <div class='login-input-container'>
+
+        <input type='text' name='username' class='login-input' placeholder='Username'/>
+
+    </div>
+
+    <div class='login-input-container'>
+
+        <input type='password' name='password' class='login-input' placeholder='Password'/>
+
+    </div>
+
+    <input type='submit' class='login-form-button' value='SIGN IN' name='login-submit'/>
+
+</form>

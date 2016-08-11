@@ -1,0 +1,10 @@
+1b6c54,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/,1470944042,466041,200
+466041,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/,1470944042,,500
+608d0e,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/_wdt/466041,1470944042,9b9cca,200
+9b9cca,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/_wdt/466041,1470944042,,500
+5bd81f,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/,1470944199,,200
+74d10f,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/js/routing?callback=fos.Router.setData,1470944200,,200
+bcb1c3,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/,1470944440,,200
+4ad983,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/js/routing?callback=fos.Router.setData,1470944440,,200
+04d9c8,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/,1470944441,,200
+dddd9e,127.0.0.1,GET,http://bernr.dev.com/app_dev.php/js/routing?callback=fos.Router.setData,1470944441,,200
