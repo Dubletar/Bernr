@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "829c1646e4adbec1a2c39a24d9aa50f0",
-    "content-hash": "e08431e50b9e3d700a382194fda8d63a",
+    "hash": "19cb8210ad5ca36a461b39c1d782f50f",
+    "content-hash": "677897411d192e39978da67faa237e11",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -556,22 +556,22 @@
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
-            "version": "dev-master",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "e251191cd3fa86545542ae7d3164d7f26746d590"
+                "reference": "303a576e2124efb07ec215e34ea2480b841cf5e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/e251191cd3fa86545542ae7d3164d7f26746d590",
-                "reference": "e251191cd3fa86545542ae7d3164d7f26746d590",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/303a576e2124efb07ec215e34ea2480b841cf5e4",
+                "reference": "303a576e2124efb07ec215e34ea2480b841cf5e4",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "~1.0",
                 "doctrine/migrations": "~1.0",
-                "php": ">=5.4.0",
+                "php": ">=5.3.2",
                 "symfony/framework-bundle": "~2.3|~3.0"
             },
             "type": "symfony-bundle",
@@ -610,7 +610,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2016-02-15 11:26:08"
+            "time": "2015-11-04 13:45:30"
         },
         {
             "name": "doctrine/inflector",
@@ -3670,7 +3670,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "friendsofsymfony/rest-bundle": 20,
-        "doctrine/doctrine-migrations-bundle": 20,
         "nelmio/api-doc-bundle": 20
     },
     "prefer-stable": false,

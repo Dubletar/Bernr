@@ -31,7 +31,7 @@
         "symfony/asset": "^2.7",
         "jmikola/js-assets-helper-bundle": "^1.0",
         "doctrine/doctrine-bundle": "~1.5",
-        "doctrine/doctrine-migrations-bundle": "dev-master",
+        "doctrine/doctrine-migrations-bundle": "^1.1",
         "stof/doctrine-extensions-bundle": "^1.2",
         "stfalcon/tinymce-bundle": "^0.4.0",
         "exercise/htmlpurifier-bundle": "^0.2.2",

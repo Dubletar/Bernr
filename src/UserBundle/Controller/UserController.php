@@ -67,6 +67,7 @@ class UserController extends AbstractController
             return $this->createJmsResponse(true);
         }
         
+        return $this->createJmsResponse($data);
         return $this->render(':navigation_templates/User:login_form.html.twig', $data);
     }
     
