@@ -24,6 +24,7 @@ class UserController extends AbstractController
         // Grab the parameters.
         $username = $request->request->get('username');
         $password = md5($request->request->get('password'));
+        $isApp = $request->request->get('app');
         
         // Set up return data container.
         $data = array();
@@ -63,12 +64,20 @@ class UserController extends AbstractController
             // Prepare the session manager
             $sessionManager = $this->container->get('sess.manager');
             $sessionManager->logUserIn($userEntity, $request->getClientIp());
-            
-            return $this->createJmsResponse(true);
+
+            if ($isApp) {
+                return $this->createJmsResponse($userEntity);
+            } else {
+                return $this->createJmsResponse(true);
+            }
         }
-        
-        return $this->createJmsResponse($data);
-        return $this->render(':navigation_templates/User:login_form.html.twig', $data);
+
+        // Failed to login
+        if ($isApp) {
+            return $this->createJmsResponse(false);
+        } else {
+            return $this->render(':navigation_templates/User:login_form.html.twig', $data);
+        }
     }
     
     /**
