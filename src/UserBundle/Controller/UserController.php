@@ -25,6 +25,7 @@ class UserController extends AbstractController
         $username = $request->request->get('username');
         $password = md5($request->request->get('password'));
         $isApp = $request->request->get('app');
+        return $this->createJmsResponse($isApp);
         
         // Set up return data container.
         $data = array();
