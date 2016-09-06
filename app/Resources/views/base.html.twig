@@ -44,16 +44,20 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 
     </head>
-    <body style="padding: 0px; margin: 0px;">
-        <div style="position:relative; background:#fff;">
-            <div style="position:absolute; margin: 0 auto;">
-                <img src="/images/bernr-hand.png"
-            </div>
-            <div style="position: absolute; top: 0px; left: 0px;color:#EF5C26; font-family: 'Muli', sans-serif; padding: 100px 40px; font-size: 40px; width: 30%;">
-                <div>
-                    We're Bringing Berning Hearts Together!<br/><br/>
-                    Coming Soon!
-                </div>
+    <body>
+
+        <div class="site-wrapper">
+
+            {% block site_header %}
+
+                <div class="navigation-container"></div>
+
+            {%  endblock site_header %}
+
+            {% block site_content %}
+
+            {% endblock site_content %}
+
         </div>
 
     </body>

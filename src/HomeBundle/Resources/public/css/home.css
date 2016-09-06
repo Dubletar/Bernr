@@ -1,0 +1,17 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    background: #FSFSFS;
+}
+
+* {
+    -webkit-box-sizing: border-box; /* Android ≤ 2.3, iOS ≤ 4 */
+    -moz-box-sizing: border-box; /* Firefox ≤ 28 */
+    box-sizing: border-box; /* Chrome, Firefox 29+, IE 8+, Opera, Safari 5.1 */
+}
+
+.site-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
