@@ -2,6 +2,7 @@
 
 namespace Application\Migrations;
 
+use Doctrine\Common\Util\Debug;
 use MigrationsBundle\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use UserBundle\Entity\Geolocation;
@@ -383,21 +384,23 @@ class Version20160921210642 extends AbstractMigration
     
     function createEntitiesFromBatch($batchData)
     {
-        foreach ($batchData as $data) {
-            
-            $geoEntity = new Geolocation();
-            $geoEntity->setCountry($data[0]);
-            $geoEntity->setCity($data[1]);
-            $geoEntity->setAccentCity($data[2]);
-            $geoEntity->setRegion($data[3]);
-            $geoEntity->setLatitude($data[5]);
-            $geoEntity->setLongitude($data[6]);
+        try {
 
-            $this->em->persist($geoEntity);
+            foreach ($batchData as $key => $data) {
 
+                $geoEntity = new Geolocation();
+                $geoEntity->setCountry($data[0]);
+                $geoEntity->setCity($data[1]);
+                $geoEntity->setAccentCity($data[2]);
+                $geoEntity->setRegion($data[3]);
+                $geoEntity->setLatitude($data[5]);
+                $geoEntity->setLongitude($data[6]);
+
+                $this->em->persist($geoEntity);
+            }
             $this->em->flush();
-            $this->em->clear();
-            gc_collect_cycles();
+        } catch (\Exception $e) {
+            $this->write($e->getMessage());
         }
     }
     
