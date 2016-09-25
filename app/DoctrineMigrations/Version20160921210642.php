@@ -45,8 +45,6 @@ class Version20160921210642 extends AbstractMigration
         
         $targetLine = 0;
         $batchLinesAllowed = 1000;
-        $currentLine = 0;
-        $batchData = array();
         
         $this->write("Total number of batches: " . ($numberOfLines / $batchLinesAllowed));
         
@@ -73,10 +71,6 @@ class Version20160921210642 extends AbstractMigration
             $this->createEntitiesFromBatch($batchData);
             $this->write("Lines completed: " . $targetLine . " - " . ($targetLine + $batchLinesAllowed));
             $targetLine += $batchLinesAllowed;
-            
-            if ($targetLine >= 1000) {
-                die;
-            }
         }
         
         /**$file = fopen(__DIR__ . "/../../web/data/geolocation.txt", "r");
@@ -389,11 +383,7 @@ class Version20160921210642 extends AbstractMigration
     
     function createEntitiesFromBatch($batchData)
     {
-        //var_dump($batchData);
-        //die;
-        
         foreach ($batchData as $data) {
-            var_dump($data);
             
             $geoEntity = new Geolocation();
             $geoEntity->setCountry($data[0]);
@@ -404,13 +394,10 @@ class Version20160921210642 extends AbstractMigration
             $geoEntity->setLongitude($data[6]);
 
             $this->em->persist($geoEntity);
-            \Doctrine\Common\Util\Debug::dump($geoEntity);
 
             $this->em->flush();
-            
-            $test = $this->em->getRepository("UserBundle:Geolocation")->findAll();
-            \Doctrine\Common\Util\Debug::dump($test);
-            die;
+            $this->em->clear();
+            gc_collect_cycles();
         }
     }
     
