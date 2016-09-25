@@ -18,9 +18,11 @@ class Version20160921210642 extends AbstractMigration
     {
         parent::up($schema);
 
-        $this->addSql('CREATE TABLE geolocation (id INT AUTO_INCREMENT NOT NULL, country VARCHAR(250) NOT NULL, city VARCHAR(250) NOT NULL, accent_city VARCHAR(250) NOT NULL, region VARCHAR(250) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE user_profiles DROP first_name, DROP last_name, CHANGE username display_name VARCHAR(50) NOT NULL');
-        $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(250) NOT NULL, code VARCHAR(250) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        //$this->addSql('CREATE TABLE geolocation (id INT AUTO_INCREMENT NOT NULL, country VARCHAR(250) NOT NULL, city VARCHAR(250) NOT NULL, accent_city VARCHAR(250) NOT NULL, region VARCHAR(250) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        //$this->addSql('ALTER TABLE user_profiles DROP first_name, DROP last_name, CHANGE username display_name VARCHAR(50) NOT NULL');
+        //$this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(250) NOT NULL, code VARCHAR(250) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+    
+        $this->generateData();
     }
 
     /**
@@ -35,11 +37,49 @@ class Version20160921210642 extends AbstractMigration
         $this->addSql('DROP TABLE country');
     }
 
-    public function postUp(Schema $schema)
-    {
-        parent::postUp($schema);
+    public function generateData()
+    {        
+        $filePath = __DIR__ . "/../../web/data/geolocation.txt";
+        $numberOfLines = $this->getLines($filePath);
+        $this->write("Total number of lines: " . $numberOfLines);
+        
+        $targetLine = 0;
+        $batchLinesAllowed = 1000;
+        $currentLine = 0;
+        $batchData = array();
+        
+        $this->write("Total number of batches: " . ($numberOfLines / $batchLinesAllowed));
+        
+        while ($targetLine < $numberOfLines) {
+            
+            $file = fopen($filePath, "r");
+            $batchData = array();
+            $currentLine = 0;
 
-        $file = fopen(__DIR__ . "/../../web/data/geolocation.txt", "r");
+            while ($line = fgets($file)) {
+
+                if ($currentLine >= $targetLine && 
+                    $currentLine <= ($targetLine + $batchLinesAllowed) &&
+                    $currentLine != 0
+                ) {
+                    $batchData[] = explode(",", $line);
+                    $this->write("Line Count: " . $currentLine);
+                }
+                
+                $currentLine++;
+            }
+            fclose($file);
+            
+            $this->createEntitiesFromBatch($batchData);
+            $this->write("Lines completed: " . $targetLine . " - " . ($targetLine + $batchLinesAllowed));
+            $targetLine += $batchLinesAllowed;
+            
+            if ($targetLine >= 1000) {
+                die;
+            }
+        }
+        
+        /**$file = fopen(__DIR__ . "/../../web/data/geolocation.txt", "r");
         $counter = 0;
         $lineCount = 0;
 
@@ -67,6 +107,8 @@ class Version20160921210642 extends AbstractMigration
 
             if ($counter == 1000) {
                 $this->em->flush();
+                $this->em->clear();
+                gc_collect_cycles();
                 $counter = 0;
             }
 
@@ -341,5 +383,48 @@ class Version20160921210642 extends AbstractMigration
         }
 
         $this->em->flush();
+         * 
+         */
+    }
+    
+    function createEntitiesFromBatch($batchData)
+    {
+        //var_dump($batchData);
+        //die;
+        
+        foreach ($batchData as $data) {
+            var_dump($data);
+            
+            $geoEntity = new Geolocation();
+            $geoEntity->setCountry($data[0]);
+            $geoEntity->setCity($data[1]);
+            $geoEntity->setAccentCity($data[2]);
+            $geoEntity->setRegion($data[3]);
+            $geoEntity->setLatitude($data[5]);
+            $geoEntity->setLongitude($data[6]);
+
+            $this->em->persist($geoEntity);
+            \Doctrine\Common\Util\Debug::dump($geoEntity);
+
+            $this->em->flush();
+            
+            $test = $this->em->getRepository("UserBundle:Geolocation")->findAll();
+            \Doctrine\Common\Util\Debug::dump($test);
+            die;
+        }
+    }
+    
+    function getLines($file)
+    {
+        $f = fopen($file, 'rb');
+        $lines = 0;
+
+        while (!feof($f)) {
+            $lines += substr_count(fread($f, 8192), "\n");
+        }
+
+        fclose($f);
+
+        return $lines;
     }
 }
