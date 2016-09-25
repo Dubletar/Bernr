@@ -28,24 +28,6 @@ class User
      * @JMS\Type("integer")
      */
     protected $id;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="first_name", type="string", length=255)
-     * @JMS\Expose
-     * @JMS\Type("string")
-     */
-    protected $firstName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="last_name", type="string", length=255)
-     * @JMS\Expose
-     * @JMS\Type("string")
-     */
-    protected $lastName;
     
     /**
      * @var DateTime
@@ -64,9 +46,9 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=50)
+     * @ORM\Column(name="display_name", type="string", length=50)
      */
-    protected $username;
+    protected $display;
 
     /**
      * 
@@ -75,48 +57,6 @@ class User
     public function getId()
     {
         return $this->id;
-    }
-    
-    /**
-     * 
-     * @param string $firstName
-     * @return self
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-        
-        return $this;
-    }
-    
-    /**
-     * 
-     * @param string $lastName
-     * @return self
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-        
-        return $this;
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->firstName;
-    }
-    
-    /**
-     * 
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
     }
     
     /**
@@ -163,12 +103,12 @@ class User
     
     /**
      * 
-     * @param string $username
+     * @param string $displayName
      * @return self
      */
-    public function setUsername($username)
+    public function setDisplayName($displayName)
     {
-        $this->username = $username;
+        $this->displayName = $displayName;
         
         return $this;
     }
@@ -177,8 +117,8 @@ class User
      * 
      * @return string
      */
-    public function getUsername()
+    public function getDisplayName()
     {
-        return $this->username;
+        return $this->displayName;
     }
 }

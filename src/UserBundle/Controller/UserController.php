@@ -22,7 +22,7 @@ class UserController extends AbstractController
     public function loginAction(Request $request)
     {
         // Grab the parameters.
-        $username = $request->request->get('username');
+        $email = $request->request->get('email');
         $password = md5($request->request->get('password'));
         $isApp = $request->request->get('app');
         
@@ -32,31 +32,14 @@ class UserController extends AbstractController
         // Validate the login data
         // Check if a user account exists.
         $userEntity = $this->getEm()->getRepository('UserBundle:User')
-            ->findOneBy(array('username' => $username));
-        
-        $data['userEntity'] = $userEntity;
-        
+            ->findUserByEmail($email);
+
         // If no user, mark as an error.
         if (!$userEntity) {
-            $data['error'] = true;
+            return $this->createJmsResponse(false);
         }
-        
-        // If there's been no error, check if the password matches too.
-        if (!array_key_exists('error', $data)) {
-            
-            $passwordEntity = $this->getEm()->getRepository('UserBundle:Password')
-                ->findOneBy(array('password' => $password, 'current' => 1, 'userId' => $userEntity->getId()));
-            
-            /**
-             * DELETE
-             */
-            $data['password'] = $passwordEntity;
-            
-            // If no match, mark as error
-            if (!$passwordEntity) {
-                $data['error'] = true;
-            }
-        }
+
+        $data['userEntity'] = $userEntity;
         
         // If no errors exist, log in the user.
         if (!array_key_exists('error', $data)) {
