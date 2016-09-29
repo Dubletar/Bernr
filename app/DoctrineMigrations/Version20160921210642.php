@@ -5,6 +5,7 @@ namespace Application\Migrations;
 use Doctrine\Common\Util\Debug;
 use MigrationsBundle\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use UserBundle\Entity\Country;
 use UserBundle\Entity\Geolocation;
 
 /**
@@ -19,9 +20,9 @@ class Version20160921210642 extends AbstractMigration
     {
         parent::up($schema);
 
-        //$this->addSql('CREATE TABLE geolocation (id INT AUTO_INCREMENT NOT NULL, country VARCHAR(250) NOT NULL, city VARCHAR(250) NOT NULL, accent_city VARCHAR(250) NOT NULL, region VARCHAR(250) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-        //$this->addSql('ALTER TABLE user_profiles DROP first_name, DROP last_name, CHANGE username display_name VARCHAR(50) NOT NULL');
-        //$this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(250) NOT NULL, code VARCHAR(250) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE geolocation (id INT AUTO_INCREMENT NOT NULL, country VARCHAR(250) NOT NULL, city VARCHAR(250) NOT NULL, accent_city VARCHAR(250) NOT NULL, region VARCHAR(250) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE user_profiles DROP first_name, DROP last_name, CHANGE username display_name VARCHAR(50) NOT NULL');
+        $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(250) NOT NULL, code VARCHAR(250) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
     
         $this->generateData();
     }
@@ -39,80 +40,56 @@ class Version20160921210642 extends AbstractMigration
     }
 
     public function generateData()
-    {        
-        $filePath = __DIR__ . "/../../web/data/geolocation.txt";
-        $numberOfLines = $this->getLines($filePath);
-        $this->write("Total number of lines: " . $numberOfLines);
-        
-        $targetLine = 0;
-        $batchLinesAllowed = 1000;
-        
-        $this->write("Total number of batches: " . ($numberOfLines / $batchLinesAllowed));
-        
-        while ($targetLine < $numberOfLines) {
-            
-            $file = fopen($filePath, "r");
-            $batchData = array();
+    {
+        $directory = __DIR__ . "/../../web/data/";
+        $filePath = $directory . "geolocation.txt";
+        $sqlDocPath = $directory . "geolocation.sql";
+
+        if (!file_exists($sqlDocPath)) {
+            $numberOfLines = $this->getLines($filePath);
+            $this->write("Total number of lines: " . $numberOfLines);
+
             $currentLine = 0;
 
+            // Prepare sql doc
+            $sqlDoc = fopen($sqlDocPath, "w");
+            $text = "USE `bernr`;\n";
+            $text .= "INSERT INTO `geolocation` (`country`, `city`, `accent_city`, `region`, `latitude`, `longitude`) VALUES \n";
+            fwrite($sqlDoc, $text);
+
+            $file = fopen($filePath, "r");
             while ($line = fgets($file)) {
 
-                if ($currentLine >= $targetLine && 
-                    $currentLine <= ($targetLine + $batchLinesAllowed) &&
-                    $currentLine != 0
-                ) {
-                    $batchData[] = explode(",", $line);
-                    $this->write("Line Count: " . $currentLine);
+                if ($currentLine != 0) {
+                    $data = explode(",", $line);
+                    $text = '("' . htmlentities($data[0])
+                        . '", "' . htmlentities($data[1])
+                        . '", "' . htmlentities($data[2])
+                        . '", "' . htmlentities($data[3])
+                        . '", "' . htmlentities($data[5])
+                        . '", "' . htmlentities($data[6])
+                        . '")';
+
+                    if (($currentLine + 1) != $numberOfLines) {
+                        $text .= ",";
+                    }
+                    $text .= "\n";
+
+                    fwrite($sqlDoc, $text);
+
+                    if (!($currentLine % 1000)) {
+                        $this->write("Line " . $currentLine . " completed.");
+                    }
                 }
-                
+
                 $currentLine++;
             }
             fclose($file);
-            
-            $this->createEntitiesFromBatch($batchData);
-            $this->write("Lines completed: " . $targetLine . " - " . ($targetLine + $batchLinesAllowed));
-            $targetLine += $batchLinesAllowed;
+            fclose($sqlDoc);
+            $this->write("sqlDoc created!");
         }
         
-        /**$file = fopen(__DIR__ . "/../../web/data/geolocation.txt", "r");
-        $counter = 0;
-        $lineCount = 0;
-
-        while ($line = fgets($file)) {
-
-            $this->write("Line Count: " . $lineCount);
-
-            if ($lineCount < 1) {
-                $lineCount++;
-                continue;
-            }
-            $lineCount++;
-
-            $data = explode(",", $line);
-
-            $geoEntity = new Geolocation();
-            $geoEntity->setCountry($data[0]);
-            $geoEntity->setCity($data[1]);
-            $geoEntity->setAccentCity($data[2]);
-            $geoEntity->setRegion($data[3]);
-            $geoEntity->setLatitude($data[4]);
-            $geoEntity->setLongitude($data[5]);
-
-            $this->em->persist($geoEntity);
-
-            if ($counter == 1000) {
-                $this->em->flush();
-                $this->em->clear();
-                gc_collect_cycles();
-                $counter = 0;
-            }
-
-            $counter++;
-        }
-
-        $this->em->flush();
-
-        $listOfCountries = json_decode('[
+       $listOfCountries = json_decode('[
             { "name": "Afghanistan", "code": "AF" },
             { "name": "Åland Islands", "code": "AX" },
             { "name": "Albania", "code": "AL" },
@@ -359,49 +336,16 @@ class Version20160921210642 extends AbstractMigration
             { "name": "Zambia", "code": "ZM" },
             { "name": "Zimbabwe", "code": "ZW" }
         ]', true);
-        $countryCount = 0;
 
         foreach ($listOfCountries as $country) {
-
-            if ($countryCount == 1000) {
-                $countryCount = 0;
-                $this->em->flush();
-                continue;
-            }
 
             $Country = new Country();
             $Country->setName($country['name']);
             $Country->setCode($country['code']);
             $this->em->persist($Country);
-
-            $countryCount++;
         }
 
         $this->em->flush();
-         * 
-         */
-    }
-    
-    function createEntitiesFromBatch($batchData)
-    {
-        try {
-
-            foreach ($batchData as $key => $data) {
-
-                $geoEntity = new Geolocation();
-                $geoEntity->setCountry($data[0]);
-                $geoEntity->setCity($data[1]);
-                $geoEntity->setAccentCity($data[2]);
-                $geoEntity->setRegion($data[3]);
-                $geoEntity->setLatitude($data[5]);
-                $geoEntity->setLongitude($data[6]);
-
-                $this->em->persist($geoEntity);
-            }
-            $this->em->flush();
-        } catch (\Exception $e) {
-            $this->write($e->getMessage());
-        }
     }
     
     function getLines($file)
