@@ -23,8 +23,6 @@ class Version20160921210642 extends AbstractMigration
         $this->addSql('CREATE TABLE geolocation (id INT AUTO_INCREMENT NOT NULL, country VARCHAR(250) NOT NULL, city VARCHAR(250) NOT NULL, accent_city VARCHAR(250) NOT NULL, region VARCHAR(250) NOT NULL, latitude DOUBLE PRECISION NOT NULL, longitude DOUBLE PRECISION NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE user_profiles DROP first_name, DROP last_name, CHANGE username display_name VARCHAR(50) NOT NULL');
         $this->addSql('CREATE TABLE country (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(250) NOT NULL, code VARCHAR(250) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
-    
-        $this->generateData();
     }
 
     /**
@@ -39,8 +37,10 @@ class Version20160921210642 extends AbstractMigration
         $this->addSql('DROP TABLE country');
     }
 
-    public function generateData()
+    public function postUp(Schema $schema)
     {
+        parent::postUp($schema);
+        
         $directory = __DIR__ . "/../../web/data/";
         $filePath = $directory . "geolocation.txt";
         $sqlDocPath = $directory . "geolocation.sql";
