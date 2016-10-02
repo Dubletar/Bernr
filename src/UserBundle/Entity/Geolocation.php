@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as JMS;
  * Geolocation.
  *
  * @ORM\Table(name="geolocation")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="UserBundle\Entity\GeolocationRepository")
  * @ORM\HasLifecycleCallbacks()
  *
  * @JMS\ExclusionPolicy("all")
@@ -31,6 +31,8 @@ class Geolocation
      * @var string
      *
      * @ORM\Column(name="country", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $country;
 
@@ -38,6 +40,8 @@ class Geolocation
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $city;
 
@@ -45,6 +49,8 @@ class Geolocation
      * @var string
      *
      * @ORM\Column(name="accent_city", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $accentCity;
 
@@ -52,6 +58,8 @@ class Geolocation
      * @var string
      *
      * @ORM\Column(name="region", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $region;
 

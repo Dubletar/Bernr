@@ -62,17 +62,19 @@ class UserController extends AbstractController
             return $this->render(':navigation_templates/User:login_form.html.twig', $data);
         }
     }
-    
+
     /**
-     * @Route("/test", name="test", options={"expose":true})
-     * 
-     * @param Request $request
+     * @Route("/get-genders", name="get_genders", options={"expose":true})
+     *
      * @return Response
      */
-    public function testAction(Request $request)
+    public function getGendersAction()
     {
-        $session = $this->container->get('session');
-        
-        return $this->createJmsResponse($session->getId());
+        $genders = array();
+        $genders['all'] = $this->getEm()->getRepository("UserBundle:Gender")->findAll();
+        $genders['seeking'] = $this->getEm()->getRepository("UserBundle:Gender")
+            ->findBy(array("showSeeking" => true));
+
+        return $this->createJmsResponse($genders);
     }
 }
