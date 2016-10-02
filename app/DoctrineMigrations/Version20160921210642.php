@@ -40,7 +40,7 @@ class Version20160921210642 extends AbstractMigration
     public function postUp(Schema $schema)
     {
         parent::postUp($schema);
-        
+
         $directory = __DIR__ . "/../../web/data/";
         $filePath = $directory . "geolocation.txt";
         $sqlDocPath = $directory . "geolocation.sql";
