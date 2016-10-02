@@ -31,6 +31,8 @@ class Country
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $name;
 
@@ -38,6 +40,8 @@ class Country
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $code;
 
