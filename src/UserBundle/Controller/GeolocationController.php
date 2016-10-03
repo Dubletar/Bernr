@@ -15,6 +15,16 @@ use UtilityBundle\Controller\AbstractController;
 class GeolocationController extends AbstractController
 {
     /**
+     * @Route("/", name="geolocation_index", options={"expose":true})
+     *
+     * @return Response
+     */
+    public function indexAction()
+    {
+        return $this->createJmsResponse(true);
+    }
+
+    /**
      * @Route("/get-countries", name="get_countries", options={"expose":true})
      *
      * @return Response
@@ -26,9 +36,12 @@ class GeolocationController extends AbstractController
 
         return $this->createJmsResponse($countries);
     }
-    
+
     /**
-     * @Route("/get-country-regions/{id}", name="get_country_regions", options={"expose":true})
+     * @Route("/get-country-regions/{id}",
+     *     name="get_countries",
+     *     requirements={"id": "\d+"},
+     *     options={"expose":true})
      *
      * @param int $id
      *
