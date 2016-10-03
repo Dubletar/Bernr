@@ -39,7 +39,7 @@ class GeolocationController extends AbstractController
 
     /**
      * @Route("/get-country-regions/{id}",
-     *     name="get_countries",
+     *     name="get_country_regions",
      *     requirements={"id": "\d+"},
      *     options={"expose":true})
      *
