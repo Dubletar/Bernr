@@ -67,7 +67,7 @@ class GeolocationController extends AbstractController
     }
 
     /**
-     * @Route("/get-region-cities/{countryCode}/{region}", name="get_country_regions", options={"expose":true})
+     * @Route("/get-region-cities/{countryCode}/{region}", name="get_region_cities", options={"expose":true})
      *
      * @param string $countryCode
      * @param string $region
