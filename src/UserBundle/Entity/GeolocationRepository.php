@@ -2,6 +2,7 @@
 
 namespace UserBundle\Entity;
 
+use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\EntityRepository;
 
 class GeolocationRepository extends EntityRepository
@@ -16,7 +17,7 @@ class GeolocationRepository extends EntityRepository
         $qb->select("g")
             ->from("UserBundle:Geolocation", "g")
             ->where($qb->expr()->eq("g.country", ":countryCode"))
-            ->setParameter("countryCode", $countryCode)
+            ->setParameter("countryCode", strtolower($countryCode))
             ->groupBy("g.region")
             ->orderBy("g.region", "ASC");
 
@@ -35,7 +36,8 @@ class GeolocationRepository extends EntityRepository
             ->from("UserBundle:Geolocation", "g")
             ->where($qb->expr()->andX(
                 $qb->expr()->eq("g.country", ":countryCode"),
-                $qb->expr()->eq("g.region", ":region")
+                $qb->expr()->eq("g.region", ":region"),
+                $qb->expr()->gt("g.")
             ))
             ->setParameter("countryCode", $countryCode)
             ->setParameter("region", $region)
