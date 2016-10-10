@@ -37,7 +37,8 @@ class GeolocationRepository extends EntityRepository
             ->where($qb->expr()->andX(
                 $qb->expr()->eq("g.country", ":countryCode"),
                 $qb->expr()->eq("g.region", ":region"),
-                $qb->expr()->gt("g.")
+                $qb->expr()->gt("g."),
+                $qb->expr()->neq("g.accentCity", '')
             ))
             ->setParameter("countryCode", $countryCode)
             ->setParameter("region", $region)

@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation as JMS;
  * Country.
  *
  * @ORM\Table(name="gender")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="UserBundle\Entity\GenderRepository")
  * @ORM\HasLifecycleCallbacks()
  *
  * @JMS\ExclusionPolicy("all")
