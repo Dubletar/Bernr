@@ -40,6 +40,8 @@ class Gender
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=250)
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $name;
 
@@ -47,6 +49,8 @@ class Gender
      * @var boolean
      *
      * @ORM\Column(name="show_seeking", type="boolean")
+     * @JMS\Expose
+     * @JMS\Type("string")
      */
     protected $showSeeking;
 
