@@ -5,5 +5,5 @@ services:
     utility.json_response:
         class: %utility.json_response.class%
         arguments:
-            - @translator
-            - @jms_serializer
+            - "@translator"
+            - "@jms_serializer"

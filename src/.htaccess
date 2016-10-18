@@ -5,4 +5,3 @@
     Order deny,allow
     Deny from all
 </IfModule>
-php_flag session.auto_start 0
