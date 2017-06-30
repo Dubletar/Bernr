@@ -25,7 +25,7 @@ class UserController extends AbstractController
         $email = $request->request->get('email');
         $password = md5($request->request->get('password'));
         $isApp = $request->request->get('app');
-        echo json_encode(array($email, $password, $isApp));
+        
         // Set up return data container.
         $data = array();
         
@@ -57,7 +57,7 @@ class UserController extends AbstractController
 
         // Failed to login
         if ($isApp) {
-            return $this->createJmsResponse(false);
+            return $this->createJmsResponse(array($email, $password, $isApp));
         } else {
             return $this->render(':navigation_templates/User:login_form.html.twig', $data);
         }
