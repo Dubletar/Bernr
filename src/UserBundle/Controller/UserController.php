@@ -36,7 +36,7 @@ class UserController extends AbstractController
 
         // If no user, mark as an error.
         if (!$userEntity) {
-            return $this->createJmsResponse(false);
+            return $this->createJmsResponse("no user");
         } else {
             return $this->createJmsResponse("user exists");
         }
