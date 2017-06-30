@@ -25,7 +25,7 @@ class UserController extends AbstractController
         $email = $request->request->get('email');
         $password = md5($request->request->get('password'));
         $isApp = $request->request->get('app');
-        
+        echo json_encode(array($email, $password, $isApp));
         // Set up return data container.
         $data = array();
         
